@@ -35,7 +35,11 @@ function SignIn() {
       setPassword("");
       lsService.set("token", response.data.token);
       lsService.set("user", response.data.user);
-      navigate("/home")
+      if(response.data.user.isAdmin) {
+        navigate("/admin")
+      } else {
+        navigate("/home")
+      }
     } else {
       alert("Error registering user")
     }

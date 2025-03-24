@@ -41,9 +41,45 @@ export const getUplineTree = async (sponsor) => {
     }
 }
 
+export const getUsers = async () => {
+    try {
+        const res = await axios.get(`${backend}/users`);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}
+
+export const getDeposits = async () => {
+    try {
+        const res = await axios.get(`${backend}/deposits`);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}
+
 export const postDeposit = async (data) => {
     try {
         const res = await axios.post(`${backend}/deposit`, data);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}
+
+export const approveDeposit = async (data) => {
+    try {
+        const res = await axios.put(`${backend}/deposits/${data}`);
         
         return res;
     } catch (error) {

@@ -65,6 +65,18 @@ export const getDeposits = async () => {
     }
 }
 
+export const getCompanyEarnings = async () => {
+    try {
+        const res = await axios.get(`${backend}/company-earnings`);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}
+
 export const postDeposit = async (data) => {
     try {
         const res = await axios.post(`${backend}/deposit`, data);

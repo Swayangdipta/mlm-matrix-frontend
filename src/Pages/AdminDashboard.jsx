@@ -5,7 +5,7 @@ import { RiAccountCircleFill } from "react-icons/ri";
 import { IoSettings } from "react-icons/io5";
 import logo from "../assets/images/logo.jpeg";
 import { lsService } from "../services/ls.service";
-import { approveDeposit, getDeposits, getUsers } from "../Components/helper/apiCalls";
+import { approveDeposit, getCompanyEarnings, getDeposits, getUsers } from "../Components/helper/apiCalls";
 // import admindp from "https://placehold.co/600x400@2x.png";
 
 const usersData = [
@@ -34,6 +34,7 @@ const usersData = [
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState(usersData);
+  const [companyEarnings, setCompanyEarnings] = useState(0);
   const [deposits, setDeposits] = useState([]);
   const [admin,setAdmin]  = useState();
   const [currentSection, setCurrentSection] = useState("dashboard");
@@ -76,6 +77,16 @@ const AdminDashboard = () => {
     }
   }
 
+  const fetchCompanyEarnings = async () => {
+    // Fetch users from API
+    const response = await getCompanyEarnings()
+    console.log(response);
+    
+    if(response.status === 200) {
+      setCompanyEarnings(response.data.totalEarnings)
+    }
+  }
+
   const handleApproval = async (id) => {
     // Approve deposit
     const response = await approveDeposit(id)
@@ -98,6 +109,7 @@ const AdminDashboard = () => {
     }
 
     fetchUsers()
+    fetchCompanyEarnings()
     fetchDeposits()
 
     setAdmin(lsService.get('user'))
@@ -142,7 +154,7 @@ const AdminDashboard = () => {
               <h2 className="text-xl font-semibold mb-4 text-white">
                 Company Earnings
               </h2>
-              <p className="text-xl"> 3,20,502$</p>
+              <p className="text-xl"> &#8377; {companyEarnings}</p>
               <div className="w-full bg-gray-700 rounded-full h-2 mt-2 mb-2">
                 <div
                   className="bg-green-500 h-full"

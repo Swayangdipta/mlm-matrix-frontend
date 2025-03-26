@@ -6,6 +6,7 @@ import { IoSettings } from "react-icons/io5";
 import logo from "../assets/images/logo.jpeg";
 import { lsService } from "../services/ls.service";
 import { approveDeposit, getCompanyEarnings, getDeposits, getUsers } from "../Components/helper/apiCalls";
+import { Link } from "react-router-dom";
 // import admindp from "https://placehold.co/600x400@2x.png";
 
 const usersData = [
@@ -189,6 +190,7 @@ const AdminDashboard = () => {
             <table className="min-w-full table-auto text-black border-collapse mb-6">
               <thead>
                 <tr className="bg-gray-200">
+                  <th className="border p-2">Sponsor</th>
                   <th className="border p-2">Referral Code</th>
                   <th className="border p-2">Name</th>
                   <th className="border p-2">Username</th>
@@ -199,7 +201,12 @@ const AdminDashboard = () => {
               <tbody>
                 {users && users.map((user) => (
                   <tr key={user._id} className="bg-white">
-                    <td className="border p-2">{user.referralCode}</td>
+                    <td className="border p-2">
+                      <Link to={`/admin/user/${user?.sponsor?._id}/${user?.sponsor?.sponsor}`}>{user?.sponsor?.name || 'N/A'}</Link>
+                    </td>
+                    <td className="border p-2">
+                      <Link to={`/admin/user/${user._id}/${user?.sponsor?._id}`}>{user.referralCode}</Link>
+                    </td>
                     <td className="border p-2">{user.name || '-'}</td>
                     <td className="border p-2">{user.username}</td>
                     <td className="border p-2">{user.email || '-'}</td>

@@ -202,10 +202,10 @@ const AdminDashboard = () => {
                 {users && users.map((user) => (
                   <tr key={user._id} className="bg-white">
                     <td className="border p-2">
-                      <Link to={`/admin/user/${user?.sponsor?._id}/${user?.sponsor?.sponsor}`}>{user?.sponsor?.name || 'N/A'}</Link>
+                      <Link className="text-sky-700 hover:text-sky-500 underline" to={`/admin/user/${user?.sponsor?._id}/${user?.sponsor?.sponsor}`}>{user?.sponsor?.name || 'N/A'}</Link>
                     </td>
                     <td className="border p-2">
-                      <Link to={`/admin/user/${user._id}/${user?.sponsor?._id}`}>{user.referralCode}</Link>
+                      <Link className="text-sky-700 hover:text-sky-500 underline" to={`/admin/user/${user._id}/${user?.sponsor?._id}`}>{user.referralCode}</Link>
                     </td>
                     <td className="border p-2">{user.name || '-'}</td>
                     <td className="border p-2">{user.username}</td>

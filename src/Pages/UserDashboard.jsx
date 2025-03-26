@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { lsService } from '../services/ls.service';
 import { useNavigate } from 'react-router-dom';
-import { getUplineTree, postDeposit } from '../Components/helper/apiCalls';
+import { getDownlineTree, getUplineTree, postDeposit } from '../Components/helper/apiCalls';
 import { BiArrowToBottom } from 'react-icons/bi';
+import TeamTree from './TreeData';
 
 // Dummy data for now
 const userData = {
@@ -23,6 +24,7 @@ const UserDashboard = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState(userData);
   const [upline, setUpline] = useState([]);
+  const [downline, setDownline] = useState(undefined);
   const [depositAmount, setDepositAmount] = useState('');
 
   // Handle Deposit to Wallet
@@ -52,6 +54,24 @@ const UserDashboard = () => {
     }
   }
 
+  const getDownlineData = async () => {   
+    if(user._id){
+      const response = await getDownlineTree(user._id)
+      console.log(response);
+      
+      if(response.status === 200) {
+        // Transform data for react-d3-tree
+        const transformTree = (node) => ({
+          name: node.name,
+          children: node.children.map(transformTree),
+      });
+      
+                      
+        setDownline(transformTree(response.data))
+      }
+    }
+  }
+
   useEffect(() => {
     // Fetch user data from API
     // setUser(response.data);
@@ -65,6 +85,7 @@ const UserDashboard = () => {
 
   useEffect(() => {
     getUplineData()
+    getDownlineData()
   }, [user])
 
   return (
@@ -100,14 +121,8 @@ const UserDashboard = () => {
       {/* Downline Section */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-6">
         <h2 className="text-3xl font-semibold mb-4">Downline Tree</h2>
-        {user.downlines.length > 0 ? (
-          <ul>
-            {user.downlines.map((user) => (
-              <li key={user._id} className="mb-2">
-                <p className="text-lg">{user.name} ({user.email})</p>
-              </li>
-            ))}
-          </ul>
+        {downline ? (
+          <TeamTree data={downline} />
         ) : (
           <p>No downline users found.</p>
         )}

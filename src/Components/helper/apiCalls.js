@@ -41,6 +41,18 @@ export const getUplineTree = async (sponsor) => {
     }
 }
 
+export const getDownlineTree = async (user) => {
+    try {
+        const res = await axios.get(`${backend}/tree/${user}`);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}
+
 export const getUsers = async () => {
     try {
         const res = await axios.get(`${backend}/users`);

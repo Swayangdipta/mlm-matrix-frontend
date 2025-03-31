@@ -41,7 +41,7 @@ function App() {
           <Route path="plan" element={<Plan/>}/>
           <Route path="Contact" element={<Contact/>}/>
           <Route path="sign-in" element={<SignIn/>}/>
-          <Route path="sign-up" element={<SignUp/>}/>
+          {/* <Route path="sign-up" element={<SignUp/>}/> */}
           <Route path="forgot-pass" element={<ForgotPassword/>}/>
           <Route path="t&c" element={<TandC/>}/>
           <Route path="privacy-policy" element={<PrivacyPolicy/>}/>

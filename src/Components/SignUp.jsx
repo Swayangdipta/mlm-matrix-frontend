@@ -5,10 +5,10 @@ import { useState } from "react";
 import logo from "../assets/images/logo.jpeg";
 import { register } from "./helper/apiCalls";
 
-function SignUp() {
+function SignUp({from='signup', sponsorID = ''}) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [inputs,setInputs] = useState({
-    sponsor: "",
+    sponsor: sponsorID,
     username: "",
     fullname: "",
     email: "",
@@ -62,7 +62,9 @@ function SignUp() {
   return (
     <div>
       <div>
-        <Navbar />
+        {
+          from === 'signup' && (<Navbar />)
+        }
         <div className="flex flex-col py-16  min-h-screen bg-[rgba(0,0,0,0.75)]">
           <div
             className="bg-zinc-800 p-6 mt-6 rounded-md relative z-20 w-[90%] sm:w-[70%] md:w-[34rem] max-w-md mx-auto"
@@ -101,6 +103,7 @@ function SignUp() {
                   onChange={handleChange}
                   value={inputs.sponsor}
                   required
+                  disabled={from !== 'signup'}
                 />
               </div>
 
@@ -144,26 +147,6 @@ function SignUp() {
                   onChange={handleChange}
                   value={inputs.email}
                 />
-              </div>
-              {/* Country Selector */}
-              <div className="mb-4 text-white">
-                <select
-                  id="country"
-                  name="country"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-3xl"
-                  required
-                  onChange={handleChange}
-                  value={inputs.country
-                  }
-                >
-                  <option value="" disabled selected>
-                    Select Country
-                  </option>
-                  <option value="USA">USA</option>
-                  <option value="India">India</option>
-                  <option value="UK">UK</option>
-                  <option value="Australia">Australia</option>
-                </select>
               </div>
 
               {/* Mobile Number */}
@@ -249,7 +232,10 @@ function SignUp() {
           </div>
         </div>
 
-        <Footer />
+        {
+          from === 'signup' && (<Footer />)
+        }
+        
       </div>
     </div>
   );

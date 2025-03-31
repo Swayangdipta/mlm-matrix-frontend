@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { lsService } from '../services/ls.service';
 import { useNavigate } from 'react-router-dom';
-import { getDownlineTree, getUplineTree, postDeposit } from '../Components/helper/apiCalls';
-import { BiArrowToBottom } from 'react-icons/bi';
+import { generateSIForm, getDownlineTree, getFreeSlots, getUplineTree, payToComapny, postDeposit } from '../Components/helper/apiCalls';
+import { BiArrowToBottom, BiArrowToLeft, BiMenu } from 'react-icons/bi';
 import TeamTree from './TreeData';
+import SignUp from '../Components/SignUp';
+import Menu from '../Components/Menu';
+import Footer from '../Components/Footer';
 
 // Dummy data for now
 const userData = {
@@ -22,10 +25,13 @@ const userData = {
 
 const UserDashboard = () => {
   const navigate = useNavigate()
+  const [slots, setSlots] = useState(0);
   const [user, setUser] = useState(userData);
   const [upline, setUpline] = useState([]);
   const [downline, setDownline] = useState(undefined);
   const [depositAmount, setDepositAmount] = useState('');
+  const [isNewReigtrationOpen, setIsNewReigtrationOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Handle Deposit to Wallet
   const handleDeposit = async () => {
@@ -40,6 +46,26 @@ const UserDashboard = () => {
       }
     } else {
       alert('Please enter a valid deposit amount.');
+    }
+  };
+
+  const handleTransfer = async () => {
+    try {
+      const res = await payToComapny(user._id);
+      console.log(res);
+
+      if (res.status === 200) {
+        alert('Transfer successful!');
+        setSlots(3)
+        setUser({...user, walletBalance: user.walletBalance - 1500})
+        lsService.set('user',{...user, walletBalance: user.walletBalance - 1500})
+      }
+
+      alert(res.data.message || 'Transfer failed. Please try again.');
+
+    } catch (error) {
+      console.error('Error during transfer:', error);
+      alert(error.data.message || 'Transfer failed. Please try again.');
     }
   };
 
@@ -72,6 +98,41 @@ const UserDashboard = () => {
     }
   }
 
+  const getSlotsData = async () => {
+    if(user._id){
+      const response = await getFreeSlots(user._id)
+      console.log(response);
+      
+      if(response.status === 200) {                      
+        setSlots(response.data.freeSlots)
+      }
+    }
+  }
+
+  const handleFormDownload = async () => {
+    try {
+      const response = await generateSIForm(user._id); // Call API
+  
+      // Create a Blob from the response data
+      const blob = new Blob([response.data], { type: "application/pdf" });
+  
+      // Create a link element and trigger the download
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "mlm_printable_form.pdf";
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+    }
+  };  
+
+  const handleNewRegistration = () => {
+    setIsNewReigtrationOpen(true)
+  }
+
   useEffect(() => {
     // Fetch user data from API
     // setUser(response.data);
@@ -84,25 +145,30 @@ const UserDashboard = () => {
   }, []);
 
   useEffect(() => {
+    getSlotsData()
     getUplineData()
     getDownlineData()
   }, [user])
 
   return (
     <div className="bg-gray-100 min-h-screen p-6">
-      <h1 className="text-4xl font-bold text-center mb-6">User Dashboard</h1>
+      <div className='flex items-center justify-between w-screen h-[60px] fixed top-0 left-0 bg-white shadow-md px-6'>
+        <h1 className="font-bold text-center text-gray-600">Dashboard</h1>
+        <BiMenu className='text-gray-600 text-[18px]' onClick={e => setIsMenuOpen(!isMenuOpen)} />
+      </div>
 
       {/* User Info Section */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 className="text-3xl font-semibold mb-4">User Info</h2>
-        <p className="text-lg"><strong>Name:</strong> {user.name}</p>
-        <p className="text-lg"><strong>Email:</strong> {user.email}</p>
-        <p className="text-lg"><strong>Wallet Balance:</strong> ${user.walletBalance.toFixed(2)}</p>
+      <div className="bg-white p-6 rounded-lg shadow-md mb-6 mt-[60px] flex flex-col items-center border-dotted border-gray-600 border-2">
+        <img src="https://api.dicebear.com/9.x/glass/svg" alt="avatar" className='w-[80px] h-[80px] rounded-full' />
+        <p className="text-[18px] font-bold text-gray-700 mt-4">{user.name}</p>
+        <p className="text-[14px] font-bold text-gray-700">( {user.referralCode} )</p>
+        <p className="text-[14px] text-red-500">{user.email}</p>
+        <p className="text-[16px] font-bold text-emerald-500">₹ {user.walletBalance.toFixed(2)}</p>
       </div>
 
       {/* Deposit to Wallet Section */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 className="text-3xl font-semibold mb-4">Deposit to Wallet</h2>
+      <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">
+        <h2 className="text-xl sm:text-3xl font-semibold mb-4">Deposit to Wallet</h2>
         <input
           type="number"
           value={depositAmount}
@@ -110,17 +176,47 @@ const UserDashboard = () => {
           className="border p-2 rounded-lg mb-4 w-full"
           placeholder="Enter deposit amount"
         />
+
+        <div className='flex sm:items-center sm:flex-row flex-col gap-2 sm:gap-0'>
         <button
           onClick={handleDeposit}
           className="bg-blue-500 text-white px-6 py-2 rounded-lg"
         >
           Deposit
         </button>
+
+        <button
+          onClick={handleTransfer}
+          className="bg-emerald-500 sm:ml-6 text-white px-6 py-2 rounded-lg cursor-pointer"
+        >
+          Pay Company ( Rs. 1500.00 /- )
+        </button>
+        </div>
       </div>
 
+      {
+        slots > 0 && (
+          <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">
+            <h2 className="text-xl sm:text-3xl font-semibold mb-4">Free Slots</h2>
+            <p className="text-lg">You have <strong>{slots}</strong> free slots available.</p>
+            <div className='flex sm:items-center sm:flex-row flex-col gap-2 sm:gap-0'>
+              <button
+                onClick={handleNewRegistration}
+                className="bg-amber-500 text-white px-6 py-2 rounded-lg mt-4 cursor-pointer"
+              >New Recruit</button>
+              <button
+                onClick={handleFormDownload}
+                className="bg-blue-500 text-white px-6 py-2 rounded-lg sm:mt-4 cursor-pointer sm:ml-6"
+              >Download SI Form </button>
+            </div>
+          </div>
+        )}
+
+
+
       {/* Downline Section */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 className="text-3xl font-semibold mb-4">Downline Tree</h2>
+      <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">
+        <h2 className="text-xl sm:text-3xl font-semibold mb-4">Downline Tree</h2>
         {downline ? (
           <TeamTree data={downline} />
         ) : (
@@ -128,9 +224,9 @@ const UserDashboard = () => {
         )}
       </div>
 
-      Upline Section
-      <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 className="text-3xl font-semibold mb-4">Upline Tree</h2>
+
+      <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">
+        <h2 className="text-xl sm:text-3xl font-semibold mb-4">Upline Tree</h2>
         {upline && upline.length > 0 ? (
           <ul>
             {upline.map((user) => (
@@ -145,6 +241,27 @@ const UserDashboard = () => {
           <p>No upline users found.</p>
         )}
       </div>
+      
+      {
+        isNewReigtrationOpen && (
+          <div className="bg-white border-dotted border-gray-600 border-2 p-6 rounded-lg shadow-lg mb-6 w-[95%] h-[95%] fixed top-[2.5%] left-[2.5%] z-50 overflow-y-scroll">
+            <div onClick={e => setIsNewReigtrationOpen(false)}  className='absolute w-[40px] h-[40px] flex items-center justify-center cursor-pointer shadow-2xl top-[10px] p-2 bg-amber-100 rounded-full left-[10px]'>
+            <BiArrowToLeft className='text-[20px]'/>
+            </div>
+            <SignUp from='dashboard' sponsorID={user.referralCode} />
+          </div>
+        )
+      }
+
+      {
+        isMenuOpen && (
+          <>
+            <div onClick={e => setIsMenuOpen(false)} className='w-screen h-screen bg-[#00000010] fixed top-0 left-0'></div>
+            <Menu setIsOpen={setIsMenuOpen} user={user} setUser={setUser} />
+          </>
+        )
+      }
+      <Footer />
     </div>
   );
 };

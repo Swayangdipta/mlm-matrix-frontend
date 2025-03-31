@@ -112,3 +112,41 @@ export const approveDeposit = async (data) => {
         return error.response;
     }
 }
+
+export const getFreeSlots = async (data) => {
+    try {
+        const res = await axios.get(`${backend}/free-slots/${data}`);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}
+
+export const payToComapny = async (data) => {
+    try {
+        const res = await axios.post(`${backend}/pay-comapny/${data}`);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}
+
+export const generateSIForm = async (data) => {
+    try {
+        const res = await axios.get(`${backend}/gen-pdf/${data}`,{
+            responseType: 'blob' // Important: Set the response type to 'blob'
+        });
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}

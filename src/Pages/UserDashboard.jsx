@@ -7,6 +7,7 @@ import TeamTree from './TreeData';
 import SignUp from '../Components/SignUp';
 import Menu from '../Components/Menu';
 import Footer from '../Components/Footer';
+import SearchArea from '../Components/SearchArea';
 
 // Dummy data for now
 const userData = {
@@ -212,7 +213,9 @@ const UserDashboard = () => {
           </div>
         )}
 
+        {/* Search Section */}
 
+        <SearchArea />
 
       {/* Downline Section */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">

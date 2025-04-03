@@ -150,3 +150,20 @@ export const generateSIForm = async (data) => {
         return error.response;
     }
 }
+
+export const searchDownline = async (userId, query) => {
+    console.log(userId);
+    
+    try {
+        const res = await axios.post(`${backend}/search`,{
+            userId,
+            query
+        });
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}

@@ -167,6 +167,32 @@ const UserDashboard = () => {
         <p className="text-[16px] font-bold text-emerald-500">₹ {user.walletBalance.toFixed(2)}</p>
       </div>
 
+      {/* Earnings Section */}
+      <div className='bg-white p-6 rounded-lg shadow-md mb-6 mt-[60px] flex flex-wrap items-center border-dotted border-gray-600 border-2'>
+        <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-purple-700 to-sky-700 flex flex-col p-6 text-white font-bold items-center gap-2'>
+          <h1 className='text-[18px]'>Self Earning</h1>
+          <h1 className='text-[18px]'>Rs. {user.selfEarnings || 0}</h1>
+        </div>
+
+        <div className='w-[20px] h-[100px] flex flex-col p-6 text-black font-bold items-center justify-center'>
+          <h1 className='text-[28px]'>+</h1>
+        </div>
+
+        <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-purple-700 to-sky-700 flex flex-col p-6 text-white font-bold items-center gap-2'>
+          <h1 className='text-[18px]'>Level Earning</h1>
+          <h1 className='text-[18px]'>Rs. {user.earnings || 0}</h1>
+        </div>
+
+        <div className='w-[20px] h-[100px] flex flex-col p-6 text-black font-bold items-center justify-center'>
+          <h1 className='text-[28px]'>=</h1>
+        </div>
+
+        <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-emerald-600 to-amber-500 flex flex-col p-6 text-white font-bold items-center gap-2'>
+          <h1 className='text-[18px]'>Total Earning</h1>
+          <h1 className='text-[18px]'>Rs. {(user.selfEarnings || 0) + (user.earnings || 0)}</h1>
+        </div>        
+      </div>
+
       {/* Deposit to Wallet Section */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">
         <h2 className="text-xl sm:text-3xl font-semibold mb-4">Deposit to Wallet</h2>
@@ -215,7 +241,9 @@ const UserDashboard = () => {
 
         {/* Search Section */}
 
-        <SearchArea />
+        {
+          user && user._id && (<SearchArea userId={user._id} />)
+        }
 
       {/* Downline Section */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">

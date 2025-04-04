@@ -181,3 +181,17 @@ export const getUser = async (userId) => {
         return error.response;
     }
 }
+
+export const getDownlineCount = async (userId) => {    
+    try {
+        const res = await axios.post(`${backend}/downline-count`,{
+            userId
+        });
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}

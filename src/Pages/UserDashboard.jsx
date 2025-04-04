@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { lsService } from '../services/ls.service';
 import { useNavigate } from 'react-router-dom';
-import { generateSIForm, getDownlineTree, getFreeSlots, getUplineTree, payToComapny, postDeposit } from '../Components/helper/apiCalls';
+import { generateSIForm, getDownlineCount, getDownlineTree, getFreeSlots, getUplineTree, payToComapny, postDeposit } from '../Components/helper/apiCalls';
 import { BiArrowToBottom, BiArrowToLeft, BiMenu } from 'react-icons/bi';
 import TeamTree from './TreeData';
 import SignUp from '../Components/SignUp';
@@ -27,6 +27,7 @@ const userData = {
 const UserDashboard = () => {
   const navigate = useNavigate()
   const [slots, setSlots] = useState(0);
+  const [downlineCount, setDownlineCout] = useState(0);
   const [user, setUser] = useState(userData);
   const [upline, setUpline] = useState([]);
   const [downline, setDownline] = useState(undefined);
@@ -109,6 +110,17 @@ const UserDashboard = () => {
     }
   }
 
+  const getDownlineLength = async () => {
+    if(user._id){
+      const response = await getDownlineCount(user._id)
+       ;
+      
+      if(response.status === 200) {                      
+        setDownlineCout(response.data.downlineCount)
+      }
+    }
+  }
+
   const handleFormDownload = async () => {
     try {
       const response = await generateSIForm(user._id); // Call API
@@ -148,6 +160,7 @@ const UserDashboard = () => {
     getSlotsData()
     getUplineData()
     getDownlineData()
+    getDownlineLength()
   }, [user])
 
   return (
@@ -189,6 +202,32 @@ const UserDashboard = () => {
         <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-emerald-600 to-amber-500 flex flex-col p-6 text-white font-bold items-center gap-2'>
           <h1 className='text-[18px]'>Total Earning</h1>
           <h1 className='text-[18px]'>Rs. {(user.selfEarnings || 0) + (user.earnings || 0)}</h1>
+        </div>        
+      </div>
+
+      {/* Downline Count Section */}
+      <div className='bg-white p-6 rounded-lg shadow-md mb-6 mt-[60px] flex flex-wrap items-center border-dotted border-gray-600 border-2'>
+        <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-purple-700 to-sky-700 flex flex-col p-6 text-white font-bold items-center gap-2'>
+          <h1 className='text-[18px]'>Direct Downline</h1>
+          <h1 className='text-[18px]'>{user.downlines.length || 0}</h1>
+        </div>
+
+        <div className='w-[20px] h-[100px] flex flex-col p-6 text-black font-bold items-center justify-center'>
+          <h1 className='text-[28px]'>+</h1>
+        </div>
+
+        <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-purple-700 to-sky-700 flex flex-col p-6 text-white font-bold items-center gap-2'>
+          <h1 className='text-[18px]'>Linked Downlines</h1>
+          <h1 className='text-[18px]'>{downlineCount || 0}</h1>
+        </div>
+
+        <div className='w-[20px] h-[100px] flex flex-col p-6 text-black font-bold items-center justify-center'>
+          <h1 className='text-[28px]'>=</h1>
+        </div>
+
+        <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-emerald-600 to-amber-500 flex flex-col p-6 text-white font-bold items-center gap-2'>
+          <h1 className='text-[18px]'>Total Members</h1>
+          <h1 className='text-[18px]'>{(user.downlines.length || 0) + (downlineCount || 0)}</h1>
         </div>        
       </div>
 

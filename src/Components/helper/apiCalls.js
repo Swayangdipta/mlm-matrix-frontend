@@ -198,14 +198,10 @@ export const getDownlineCount = async (userId) => {
 
 export const updateUserProfile = async (userId, data) => {    
     try {
-        console.log(userId);
-        
         const res = await axios.put(`${backend}/update-profile/${userId}`,data);
         
         return res;
     } catch (error) {
-        console.log(error);
-        
         return error.response;
     }
 }

@@ -151,9 +151,7 @@ export const generateSIForm = async (data) => {
     }
 }
 
-export const searchDownline = async (userId, query) => {
-    console.log(userId);
-    
+export const searchDownline = async (userId, query) => {    
     try {
         const res = await axios.post(`${backend}/search`,{
             userId,
@@ -169,8 +167,6 @@ export const searchDownline = async (userId, query) => {
 }
 
 export const getUser = async (userId) => {
-    console.log(userId);
-    
     try {
         const res = await axios.get(`${backend}/get-user/${userId}`);
         

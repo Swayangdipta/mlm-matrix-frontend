@@ -16,7 +16,35 @@ function SignUp({from='signup', sponsorID = ''}) {
     mobile: "",
     password: "",
     confirmPassword: "",
+    products: [],
   });
+
+  const handleProductSelection = (product) => {
+    setInputs((prev) => {
+      const isSelected = prev.products.includes(product);
+  
+      // If already selected, remove it
+      if (isSelected) {
+        return {
+          ...prev,
+          products: prev.products.filter((p) => p !== product),
+        };
+      }
+  
+      // If not selected and less than 2 products are selected, add it
+      if (prev.products.length < 2) {
+        return {
+          ...prev,
+          products: [...prev.products, product],
+        };
+      }
+  
+      // If trying to select more than 2, show an alert
+      alert("You can only select 2 products");
+      return prev; // No changes if limit is reached
+    });
+  };
+  
 
   const handleChange = (e) => {
     setInputs({
@@ -33,7 +61,7 @@ function SignUp({from='signup', sponsorID = ''}) {
       return
     }
 
-    if(!inputs.sponsor || !inputs.username || !inputs.fullname || !inputs.email || !inputs.country || !inputs.mobile || !inputs.password || !inputs.confirmPassword) {
+    if(!inputs.sponsor || !inputs.username || !inputs.fullname || !inputs.email || !inputs.country || !inputs.mobile || !inputs.password || !inputs.confirmPassword || inputs.products.length !== 2) {
       alert("Please fill all the fields")
       return
     }
@@ -163,6 +191,32 @@ function SignUp({from='signup', sponsorID = ''}) {
                 />
               </div>
 
+              <div className="mb-4 text-white">
+                <label className="block mb-2">Select Products:</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { name: "Product A", img: "product-a.jpg" },
+                    { name: "Product B", img: "product-b.jpg" },
+                    { name: "Product C", img: "product-c.jpg" },
+                    { name: "Product D", img: "product-d.jpg" },
+                  ].map((product) => (
+                    <button
+                      key={product.name}
+                      type="button"
+                      className={`p-2 rounded-xl flex flex-col items-center transition-all duration-200 ${
+                        inputs.products.includes(product.name)
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-300 text-black"
+                      }`}
+                      onClick={() => handleProductSelection(product.name)}
+                    >
+                      <img src={product.img} alt={product.name} className="h-12 w-12 mb-2 rounded-md" />
+                      {product.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Password */}
               <div className="mb-4 relative text-white">
                 <input
@@ -225,9 +279,9 @@ function SignUp({from='signup', sponsorID = ''}) {
               </button>
 
               {/*Login Link*/}
-              <div className="flex justify-center mt-4 text-sky-500">
+              {/* <div className="flex justify-center mt-4 text-sky-500">
                 <a href="/sign-in">Login Here</a>
-              </div>
+              </div> */}
             </form>
           </div>
         </div>

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { lsService } from '../services/ls.service';
 import { useNavigate } from 'react-router-dom';
 import { generateSIForm, getDownlineCount, getDownlineTree, getFreeSlots, getUplineTree, payToComapny, postDeposit } from '../Components/helper/apiCalls';
-import { BiArrowToBottom, BiArrowToLeft, BiMenu } from 'react-icons/bi';
+import { BiArrowToBottom, BiArrowToLeft, BiMenu, BiMobile } from 'react-icons/bi';
 import TeamTree from './TreeData';
 import SignUp from '../Components/SignUp';
 import Menu from '../Components/Menu';
 import Footer from '../Components/Footer';
 import SearchArea from '../Components/SearchArea';
+import { MdEmail } from 'react-icons/md';
 
 // Dummy data for now
 const userData = {
@@ -330,6 +331,15 @@ const UserDashboard = () => {
           </>
         )
       }
+
+      {/* Customer Support Section */}
+      <div className="bg-white p-6 pt-0 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2 relative top-0">
+        <div className='w-full h-[30px] absolute top-0 left-0 bg-gradient-to-r from-emerald-500 to-sky-500'></div>
+        <h2 className="text-xl font-semibold mb-4 mt-[40px]">Customer Support (WhatsApp)</h2>
+        <h4 className='flex items-center justify-center gap-2 w-max h-max'><BiMobile /> 1234567890</h4>
+        <p className='flex items-center justify-center gap-2 w-max h-max'><MdEmail /> support@prodeal.com</p>
+      </div>
+
       <Footer />
     </div>
   );

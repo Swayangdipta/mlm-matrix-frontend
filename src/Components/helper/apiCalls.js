@@ -195,3 +195,29 @@ export const getDownlineCount = async (userId) => {
         return error.response;
     }
 }
+
+export const updateUserProfile = async (userId, data) => {    
+    try {
+        console.log(userId);
+        
+        const res = await axios.put(`${backend}/update-profile/${userId}`,data);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}
+
+export const updateUserPassword = async (userId, data) => {    
+    try {        
+        const res = await axios.put(`${backend}/change-password/${userId}`,data);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}

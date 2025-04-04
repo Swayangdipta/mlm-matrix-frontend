@@ -191,7 +191,7 @@ const UserDashboard = () => {
           <h1 className='text-[28px]'>+</h1>
         </div>
 
-        <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-purple-700 to-sky-700 flex flex-col p-6 text-white font-bold items-center gap-2'>
+        <div className='w-[200px] h-[100px] mt-4 sm:mt-0 rounded bg-gradient-to-r from-purple-700 to-sky-700 flex flex-col p-6 text-white font-bold items-center gap-2'>
           <h1 className='text-[18px]'>Level Earning</h1>
           <h1 className='text-[18px]'>Rs. {user.earnings || 0}</h1>
         </div>
@@ -200,7 +200,7 @@ const UserDashboard = () => {
           <h1 className='text-[28px]'>=</h1>
         </div>
 
-        <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-emerald-600 to-amber-500 flex flex-col p-6 text-white font-bold items-center gap-2'>
+        <div className='w-[200px] h-[100px]  mt-4 sm:mt-0 rounded bg-gradient-to-r from-emerald-600 to-amber-500 flex flex-col p-6 text-white font-bold items-center gap-2'>
           <h1 className='text-[18px]'>Total Earning</h1>
           <h1 className='text-[18px]'>Rs. {(user.selfEarnings || 0) + (user.earnings || 0)}</h1>
         </div>        
@@ -217,7 +217,7 @@ const UserDashboard = () => {
           <h1 className='text-[28px]'>+</h1>
         </div>
 
-        <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-purple-700 to-sky-700 flex flex-col p-6 text-white font-bold items-center gap-2'>
+        <div className='w-[200px] h-[100px]  mt-4 sm:mt-0 rounded bg-gradient-to-r from-purple-700 to-sky-700 flex flex-col p-6 text-white font-bold items-center gap-2'>
           <h1 className='text-[18px]'>Linked Downlines</h1>
           <h1 className='text-[18px]'>{downlineCount || 0}</h1>
         </div>
@@ -226,7 +226,7 @@ const UserDashboard = () => {
           <h1 className='text-[28px]'>=</h1>
         </div>
 
-        <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-emerald-600 to-amber-500 flex flex-col p-6 text-white font-bold items-center gap-2'>
+        <div className='w-[200px] h-[100px]  mt-4 sm:mt-0 rounded bg-gradient-to-r from-emerald-600 to-amber-500 flex flex-col p-6 text-white font-bold items-center gap-2'>
           <h1 className='text-[18px]'>Total Members</h1>
           <h1 className='text-[18px]'>{(user.downlines.length || 0) + (downlineCount || 0)}</h1>
         </div>        

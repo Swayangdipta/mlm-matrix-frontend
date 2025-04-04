@@ -10,9 +10,8 @@ const SearchArea = ({userId}) => {
         e.preventDefault()
         if(query === '') alert('Invalid Data')
         const res = await searchDownline(userId,query)
-
-        console.log(res);
-        
+            console.log(res);
+            
         if(res.status === 200){
             setSearchResults(res.data)
             return
@@ -45,23 +44,23 @@ const SearchArea = ({userId}) => {
                   <th className="border p-2">Referral Code</th>
                   <th className="border p-2">Name</th>
                   <th className="border p-2">Username</th>
-                  <th className="border p-2">Email</th>
+                  <th className="border p-2">Mobile</th>
                 </tr>
               </thead>
               <tbody>
-                {searchResults &&  (
-                  <tr className="bg-white">
-                    <td className="border p-2">
-                      <Link className="text-sky-700 hover:text-sky-500 underline" to={`/admin/user/${searchResults?.sponsor}/${searchResults?.sponsor?.sponsor}`}>{searchResults?.sponsor || 'N/A'}</Link>
-                    </td>
-                    <td className="border p-2">
-                      <Link className="text-sky-700 hover:text-sky-500 underline" to={`/admin/user/${searchResults._id}/${searchResults?.sponsor?._id}`}>{searchResults.referralCode}</Link>
-                    </td>
-                    <td className="border p-2">{searchResults.name || '-'}</td>
-                    <td className="border p-2">{searchResults.username}</td>
-                    <td className="border p-2">{searchResults.email || '-'}</td>
-                  </tr>
-                )}
+                {searchResults && searchResults.downlines.length > 0 && searchResults.downlines.map((user) => (
+                    <tr key={user._id} className="bg-white text-center">
+                        <td className="border p-2">
+                            <Link className="text-sky-700 hover:text-sky-500 underline" to={`/view-user/${user?.sponsor._id}`}>{user?.sponsor.referralCode || 'N/A'}</Link>
+                        </td>
+                        <td className="border p-2">
+                        <   Link className="text-sky-700 hover:text-sky-500 underline" to={`/view-user/${user._id}`}>{user.referralCode}</Link>
+                        </td>
+                        <td className="border p-2">{user.name || '-'}</td>
+                        <td className="border p-2">{user.username}</td>
+                        <td className="border p-2">{user.mobile || '-'}</td>
+                    </tr>
+                ))}
               </tbody>
             </table>
             </div>

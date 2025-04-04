@@ -1,10 +1,10 @@
 import React from 'react'
 import logo from '../assets/images/logo.jpeg'
 import { CgProfile } from 'react-icons/cg'
-import { BiUser } from 'react-icons/bi'
+import { BiHome, BiUser } from 'react-icons/bi'
 import { lsService } from '../services/ls.service'
-import { useNavigate } from 'react-router-dom'
-const Menu = ({setIsOpen = f => f, user, setUser = f => f}) => {
+import { Link, useNavigate } from 'react-router-dom'
+const Menu = ({setIsOpen = f => f, user, setUser = f => f, location = 'def'}) => {
     const navigate = useNavigate()
     const handleLogout = () => {
         lsService.remove('token')
@@ -26,10 +26,18 @@ const Menu = ({setIsOpen = f => f, user, setUser = f => f}) => {
         </div>
 
         <div className='mt-4'>
-            <div className='flex gap-2 items-center text-18px p-2 border-2 rounded border-dashed border-white'>
-                <BiUser className='text-[20px]' />
-                My Profile
-            </div>
+            <Link to='/home'>
+                <div className='flex gap-2 items-center text-18px p-2 border-2 rounded border-dashed border-white'>
+                    <BiHome className='text-[20px]' />
+                    Dashboard
+                </div>
+            </Link>
+            <Link to='/profile'>
+                <div className='flex gap-2 items-center text-18px p-2 border-2 rounded border-dashed border-white mt-2'>
+                    <BiUser className='text-[20px]' />
+                    My Profile
+                </div>
+            </Link>
             <button className='w-full p-2 bg-rose-500 text-white rounded mt-2' onClick={handleLogout}>Logout</button>
         </div>
     </div>

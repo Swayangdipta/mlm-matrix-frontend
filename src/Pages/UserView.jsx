@@ -11,11 +11,10 @@ const UserView = () => {
   const [upline, setUpline] = useState([]);
 
       const getDownlineData = async (user) => {   
-        console.log(user);
         
         if(user){
           const response = await getDownlineTree(user)
-          console.log(response);
+           ;
           
           if(response.status === 200) {
             // Transform data for react-d3-tree

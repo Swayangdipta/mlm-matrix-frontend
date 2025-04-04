@@ -40,7 +40,7 @@ function SignUp({from='signup', sponsorID = ''}) {
 
     const response = await register(inputs)
 
-    console.log(response);
+     ;
     
     if(response.status === 201) {
       alert("User registered successfully")

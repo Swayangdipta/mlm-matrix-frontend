@@ -61,7 +61,7 @@ const AdminDashboard = () => {
   const fetchUsers = async () => {
     // Fetch users from API
     const response = await getUsers()
-    console.log(response);
+     ;
     
     if(response.status === 200) {
       setUsers(response.data)
@@ -71,7 +71,7 @@ const AdminDashboard = () => {
   const fetchDeposits = async () => {
     // Fetch users from API
     const response = await getDeposits()
-    console.log(response);
+     ;
     
     if(response.status === 200) {
       setDeposits(response.data)
@@ -81,7 +81,7 @@ const AdminDashboard = () => {
   const fetchCompanyEarnings = async () => {
     // Fetch users from API
     const response = await getCompanyEarnings()
-    console.log(response);
+     ;
     
     if(response.status === 200) {
       setCompanyEarnings(response.data.totalEarnings)
@@ -91,7 +91,7 @@ const AdminDashboard = () => {
   const handleApproval = async (id) => {
     // Approve deposit
     const response = await approveDeposit(id)
-    console.log(response);
+     ;
 
     if(response.status === 200) {
       alert("Deposit approved successfully")

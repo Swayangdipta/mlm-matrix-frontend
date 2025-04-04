@@ -19,6 +19,8 @@ import PrivacyPolicy from "./Components/PrivacyPolicy"
 import UserDashboard from "./Pages/UserDashboard";
 import AdminDashboard from "./Pages/AdminDashboard";
 import UserView from "./Pages/UserView";
+import ViewUser from "./Pages/ViewUser";
+import Profile from "./Pages/Profile";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
           <Route path="/home" element={<UserDashboard />}/>
           <Route path="/admin" element={<AdminDashboard />}/>
           <Route path="/admin/user/:userId/:sponsorId" element={<UserView />}/>
+          <Route path="/view-user/:userId" element={<ViewUser />}/>
+          <Route path="/profile" element={<Profile />}/>
           <Route path="navbar" element={<Navbar />}/>
           <Route path="pricing" element={<Pricing />}/>
           <Route path="features" element={<Features />}/>

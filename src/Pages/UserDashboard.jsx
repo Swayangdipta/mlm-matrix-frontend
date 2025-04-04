@@ -38,7 +38,7 @@ const UserDashboard = () => {
   const handleDeposit = async () => {
     if (depositAmount > 0) {
       const response = await postDeposit({ user: user._id, amount: depositAmount });
-      console.log(response);
+       ;
       
 
       if (response.status === 200) {
@@ -53,7 +53,7 @@ const UserDashboard = () => {
   const handleTransfer = async () => {
     try {
       const res = await payToComapny(user._id);
-      console.log(res);
+       (res);
 
       if (res.status === 200) {
         alert('Transfer successful!');
@@ -73,7 +73,6 @@ const UserDashboard = () => {
   const getUplineData = async () => {    
     if(user.sponsor){
       const response = await getUplineTree(user.sponsor)
-      console.log(user.downlines);
       
       if(response.status === 200) {
         setUpline(response.data)
@@ -84,7 +83,7 @@ const UserDashboard = () => {
   const getDownlineData = async () => {   
     if(user._id){
       const response = await getDownlineTree(user._id)
-      console.log(response);
+       ;
       
       if(response.status === 200) {
         // Transform data for react-d3-tree
@@ -102,7 +101,7 @@ const UserDashboard = () => {
   const getSlotsData = async () => {
     if(user._id){
       const response = await getFreeSlots(user._id)
-      console.log(response);
+       ;
       
       if(response.status === 200) {                      
         setSlots(response.data.freeSlots)

@@ -167,3 +167,17 @@ export const searchDownline = async (userId, query) => {
         return error.response;
     }
 }
+
+export const getUser = async (userId) => {
+    console.log(userId);
+    
+    try {
+        const res = await axios.get(`${backend}/get-user/${userId}`);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}

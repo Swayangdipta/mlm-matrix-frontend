@@ -25,9 +25,12 @@ const ViewUser = () => {
     }, []);
 
     useEffect(()=>{
+        if(userId){
+            setUserData(undefined)
+        }
+        
         const getUserInfo = async () => {
             const res = await getUser(userId)
-            console.log(res);
             
             setUserData(res.data)
         }
@@ -62,7 +65,7 @@ const ViewUser = () => {
         <div className='bg-white p-6 rounded-lg shadow-md mb-6 mt-[60px] flex flex-wrap items-center border-dotted border-gray-600 border-2'>
             <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-purple-700 to-sky-700 flex flex-col p-6 text-white font-bold items-center gap-2'>
             <h1 className='text-[18px]'>Self Earning</h1>
-            <h1 className='text-[18px]'>Rs. {userData.selfEarnings || 0}</h1>
+            <h1 className='text-[18px]'>Rs. {userData?.selfEarnings || 0}</h1>
             </div>
 
             <div className='w-[20px] h-[100px] flex flex-col p-6 text-black font-bold items-center justify-center'>
@@ -71,7 +74,7 @@ const ViewUser = () => {
 
             <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-purple-700 to-sky-700 flex flex-col p-6 text-white font-bold items-center gap-2'>
             <h1 className='text-[18px]'>Level Earning</h1>
-            <h1 className='text-[18px]'>Rs. {userData.earnings || 0}</h1>
+            <h1 className='text-[18px]'>Rs. {userData?.earnings || 0}</h1>
             </div>
 
             <div className='w-[20px] h-[100px] flex flex-col p-6 text-black font-bold items-center justify-center'>
@@ -80,7 +83,7 @@ const ViewUser = () => {
 
             <div className='w-[200px] h-[100px] rounded bg-gradient-to-r from-emerald-600 to-amber-500 flex flex-col p-6 text-white font-bold items-center gap-2'>
             <h1 className='text-[18px]'>Total Earning</h1>
-            <h1 className='text-[18px]'>Rs. {(userData.selfEarnings || 0) + (userData.earnings || 0)}</h1>
+            <h1 className='text-[18px]'>Rs. {(userData?.selfEarnings || 0) + (userData?.earnings || 0)}</h1>
             </div>        
         </div>
 

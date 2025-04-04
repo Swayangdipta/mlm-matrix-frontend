@@ -260,7 +260,7 @@ const UserDashboard = () => {
         </div>
       </div>
 
-      {
+        {
         slots > 0 && (
           <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">
             <h2 className="text-xl sm:text-3xl font-semibold mb-4">Free Slots</h2>
@@ -333,7 +333,7 @@ const UserDashboard = () => {
       }
 
       {/* Customer Support Section */}
-      <div className="bg-white p-6 pt-0 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2 relative top-0">
+      <div className="bg-white p-6 pt-0 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2 relative top-0 z-0">
         <div className='w-full h-[30px] absolute top-0 left-0 bg-gradient-to-r from-emerald-500 to-sky-500'></div>
         <h2 className="text-xl font-semibold mb-4 mt-[40px]">Customer Support (WhatsApp)</h2>
         <h4 className='flex items-center justify-center gap-2 w-max h-max'><BiMobile /> 1234567890</h4>

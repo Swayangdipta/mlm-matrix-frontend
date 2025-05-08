@@ -178,6 +178,24 @@ export const getUser = async (userId) => {
     }
 }
 
+export const getWholeDownlines = async (userId) => {    
+    try {
+        const res = await axios.get(`${backend}/downlines/${userId}`);
+        
+        return res;
+    } catch (error) {
+        return error.response;
+    }
+}
+export const getDirectDownline = async (userId) => {    
+    try {
+        const res = await axios.get(`${backend}/downline/direct/${userId}`);
+        
+        return res;
+    } catch (error) {        
+        return error.response;
+    }
+}
 export const getDownlineCount = async (userId) => {    
     try {
         const res = await axios.post(`${backend}/downline-count`,{

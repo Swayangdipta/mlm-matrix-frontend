@@ -21,10 +21,13 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import UserView from "./Pages/UserView";
 import ViewUser from "./Pages/ViewUser";
 import Profile from "./Pages/Profile";
+import Downline from "./Pages/Downline";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
+    <Toaster />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />}/>
@@ -33,6 +36,8 @@ function App() {
           <Route path="/admin/user/:userId/:sponsorId" element={<UserView />}/>
           <Route path="/view-user/:userId" element={<ViewUser />}/>
           <Route path="/profile" element={<Profile />}/>
+          <Route path="/downline/direct" element={<Downline type='direct' />}/>
+          <Route path="/downline/all" element={<Downline type='all' />}/>
           <Route path="navbar" element={<Navbar />}/>
           <Route path="pricing" element={<Pricing />}/>
           <Route path="features" element={<Features />}/>

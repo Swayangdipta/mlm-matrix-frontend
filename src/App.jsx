@@ -23,6 +23,7 @@ import ViewUser from "./Pages/ViewUser";
 import Profile from "./Pages/Profile";
 import Downline from "./Pages/Downline";
 import { Toaster } from "react-hot-toast";
+import Payment from "./Pages/Payment";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/profile" element={<Profile />}/>
           <Route path="/downline/direct" element={<Downline type='direct' />}/>
           <Route path="/downline/all" element={<Downline type='all' />}/>
+          <Route path="/payment" element={<Payment />}/>
           <Route path="navbar" element={<Navbar />}/>
           <Route path="pricing" element={<Pricing />}/>
           <Route path="features" element={<Features />}/>

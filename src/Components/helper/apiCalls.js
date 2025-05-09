@@ -187,6 +187,8 @@ export const getWholeDownlines = async (userId) => {
         return error.response;
     }
 }
+
+
 export const getDirectDownline = async (userId) => {    
     try {
         const res = await axios.get(`${backend}/downline/direct/${userId}`);
@@ -196,6 +198,17 @@ export const getDirectDownline = async (userId) => {
         return error.response;
     }
 }
+
+export const getUserPaymentStatus = async (userId) => {    
+    try {
+        const res = await axios.get(`${backend}/payment-status/${userId}`);
+        
+        return res;
+    } catch (error) {
+        return error.response;
+    }
+}
+
 export const getDownlineCount = async (userId) => {    
     try {
         const res = await axios.post(`${backend}/downline-count`,{
@@ -228,6 +241,16 @@ export const updateUserPassword = async (userId, data) => {
     } catch (error) {
         console.log(error);
         
+        return error.response;
+    }
+}
+
+export const payToIndividual = async (userId,data) => {    
+    try {
+        const res = await axios.post(`${backend}/pay/${userId}`,data);
+        
+        return res;
+    } catch (error) {
         return error.response;
     }
 }

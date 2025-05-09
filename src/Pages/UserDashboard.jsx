@@ -255,12 +255,11 @@ const UserDashboard = () => {
           Deposit
         </button>
 
-        <button
-          onClick={handleTransfer}
+        <Link to='/payment'
           className="bg-emerald-500 sm:ml-6 text-white px-6 py-2 rounded-lg cursor-pointer"
         >
-          Pay Company ( Rs. 1500.00 /- )
-        </button>
+          Pay Company and Upline
+        </Link>
         </div>
       </div>
 

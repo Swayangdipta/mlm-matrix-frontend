@@ -254,3 +254,13 @@ export const payToIndividual = async (userId,data) => {
         return error.response;
     }
 }
+
+export const getTwoLevelDownline = async (userId,data) => {    
+    try {
+        const res = await axios.get(`${backend}/two-level-downlines/${userId}`);
+        
+        return res;
+    } catch (error) {
+        return error.response;
+    }
+}

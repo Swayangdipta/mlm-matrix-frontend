@@ -9,6 +9,7 @@ import Menu from '../Components/Menu';
 import Footer from '../Components/Footer';
 import SearchArea from '../Components/SearchArea';
 import { MdEmail } from 'react-icons/md';
+import TwoLevelTree from '../Components/TwoLevelTree';
 
 // Dummy data for now
 const userData = {
@@ -291,7 +292,7 @@ const UserDashboard = () => {
       <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">
         <h2 className="text-xl sm:text-3xl font-semibold mb-4">Downline Tree</h2>
         {downline ? (
-          <TeamTree data={downline} />
+          <TwoLevelTree userId={user._id} />
         ) : (
           <p>No downline users found.</p>
         )}

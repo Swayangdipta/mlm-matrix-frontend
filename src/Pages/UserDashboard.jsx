@@ -10,6 +10,7 @@ import Footer from '../Components/Footer';
 import SearchArea from '../Components/SearchArea';
 import { MdEmail } from 'react-icons/md';
 import TwoLevelTree from '../Components/TwoLevelTree';
+import PaymentQr from '../assets/images/payment_method.jpeg'
 
 // Dummy data for now
 const userData = {
@@ -240,27 +241,32 @@ const UserDashboard = () => {
       {/* Deposit to Wallet Section */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">
         <h2 className="text-xl sm:text-3xl font-semibold mb-4">Deposit to Wallet</h2>
-        <input
-          type="number"
-          value={depositAmount}
-          onChange={(e) => setDepositAmount(e.target.value)}
-          className="border p-2 rounded-lg mb-4 w-full"
-          placeholder="Enter deposit amount"
-        />
+        <div className='flex sm:items-start sm:flex-row flex-col gap-10 sm:gap-10'>
+          <img src={PaymentQr} className='h-[200px] w-[200px] mx-auto sm:mx-0' alt="" />
+          <div >
+            <input
+            type="number"
+            value={depositAmount}
+            onChange={(e) => setDepositAmount(e.target.value)}
+            className="border p-2 rounded-lg mb-4 w-full"
+            placeholder="Enter deposit amount"
+          />
 
-        <div className='flex sm:items-center sm:flex-row flex-col gap-2 sm:gap-0'>
-        <button
-          onClick={handleDeposit}
-          className="bg-blue-500 text-white px-6 py-2 rounded-lg"
-        >
-          Deposit
-        </button>
+          <div className='flex sm:items-center sm:flex-row flex-col gap-2 sm:gap-0'>
+          <button
+            onClick={handleDeposit}
+            className="bg-blue-500 text-white px-6 py-2 rounded-lg"
+          >
+            Deposit
+          </button>
 
-        <Link to='/payment'
-          className="bg-emerald-500 sm:ml-6 text-white px-6 py-2 rounded-lg cursor-pointer"
-        >
-          Pay Company and Upline
-        </Link>
+          <Link to='/payment'
+            className="bg-emerald-500 sm:ml-6 text-white px-6 py-2 rounded-lg cursor-pointer"
+          >
+            Pay Company and Upline
+          </Link>
+          </div>
+          </div>
         </div>
       </div>
 

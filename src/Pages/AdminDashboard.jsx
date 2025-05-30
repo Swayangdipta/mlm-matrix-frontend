@@ -98,6 +98,8 @@ const AdminDashboard = () => {
       alert("Deposit approved successfully")
       setDeposits(deposits.filter(deposit => deposit._id !== id))
     }
+
+    alert("Deposit already approved or failed to approve deposit")
   }
 
   useEffect(() => {
@@ -256,12 +258,16 @@ const AdminDashboard = () => {
                       <td className="border p-2">{deposit.amount}</td>
                       <td className="border p-2">{deposit.status || '-'}</td>
                       <td className="border p-2 flex space-x-2">
-                        <button
-                          onClick={() => handleApproval(deposit._id)}
-                          className="px-4 py-2 bg-blue-500 text-white rounded"
-                        >
-                          Approve
-                        </button>
+                        {deposit.status === 'pending' ? (
+                          <button
+                            onClick={() => handleApproval(deposit._id)}
+                            className="px-4 py-2 bg-green-500 text-white rounded"
+                          >
+                            Approve
+                          </button>
+                        ) : (
+                          <span className="text-gray-500">Approved</span>
+                        )}
                       </td>
                     </tr>
                   ))}

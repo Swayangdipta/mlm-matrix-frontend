@@ -5,7 +5,7 @@ import { RiAccountCircleFill } from "react-icons/ri";
 import { IoSettings } from "react-icons/io5";
 import logo from "../assets/images/logo.jpeg";
 import { lsService } from "../services/ls.service";
-import { approveDeposit, getCompanyEarnings, getDeposits, getUsers } from "../Components/helper/apiCalls";
+import { approveDeposit, getCompanyEarnings, getDeposits, getUsers, removeUser, updateActiveStatus } from "../Components/helper/apiCalls";
 import { Link, useNavigate } from "react-router-dom";
 // import admindp from "https://placehold.co/600x400@2x.png";
 
@@ -49,15 +49,48 @@ const AdminDashboard = () => {
   };
 
   // Handle Delete
-  const deleteUser = (id) => {
-    const updatedUsers = users.filter((user) => user.id !== id);
-    setUsers(updatedUsers);
+  const deleteUser = async (id) => {
+    try {
+      const res = await removeUser(id)
+      if (res.status === 200) {
+        const updatedUsers = users.filter((user) => user.id !== id);
+        setUsers(updatedUsers);
+        alert("User deleted successfully");
+        return
+      }
+      alert("Failed to delete user");
+      return
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Failed to delete user");
+      return
+    }
   };
 
   // Handle Edit
   const editUser = (id) => {
     alert(`Edit user with ID: ${id}`);
   };
+
+  const updateUserStatus = async (id) => {
+    try {
+      const res = await updateActiveStatus(id)
+      if (res.status === 200) {
+        const updatedUsers = users.map((user) =>
+          user._id === id ? { ...user, status: user.status === 'active' ? 'inactive' : 'active' } : user
+        );
+        setUsers(updatedUsers);
+        alert("User status updated successfully");
+        return
+      }
+      alert("Failed to toggle user status");
+      return
+    } catch (error) {
+      console.error("Error updating user status:", error);
+      alert("Failed to update user status");
+      return
+    }
+  }
 
   const fetchUsers = async () => {
     // Fetch users from API
@@ -201,6 +234,7 @@ const AdminDashboard = () => {
                   <th className="border p-2">Name</th>
                   <th className="border p-2">Username</th>
                   <th className="border p-2">Email</th>
+                  <th className="border p-2">Status</th>
                   <th className="border p-2">Actions</th>
                 </tr>
               </thead>
@@ -216,15 +250,22 @@ const AdminDashboard = () => {
                     <td className="border p-2">{user.name || '-'}</td>
                     <td className="border p-2">{user.username}</td>
                     <td className="border p-2">{user.email || '-'}</td>
+                    <td className="border p-2">{user.status || '-'}</td>
                     <td className="border p-2 flex space-x-2">
                       <button
-                        onClick={() => editUser(user.id)}
+                          onClick={(e) => updateUserStatus(user._id)}
+                          className="px-4 py-2 bg-amber-500 text-white rounded"
+                        >
+                          Toggle Status
+                      </button>
+                      <button
+                        onClick={() => editUser(user._id)}
                         className="px-4 py-2 bg-blue-500 text-white rounded"
                       >
                         Edit
                       </button>
                       <button
-                        onClick={() => deleteUser(user.id)}
+                        onClick={() => deleteUser(user._id)}
                         className="px-4 py-2 bg-red-500 text-white rounded"
                       >
                         Delete

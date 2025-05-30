@@ -288,3 +288,23 @@ export const getUserWithdrawals = async (userId) => {
         return error.response;
     }
 }
+
+export const updateActiveStatus = async (userId) => {
+    try {
+        const res = await axios.put(`${backend}/user/status/${userId}`);
+        
+        return res;
+    } catch (error) {
+        return error;
+    }
+}
+
+export const removeUser = async (userId) => {
+    try {
+        const res = await axios.delete(`${backend}/user/delete/${userId}`);
+        
+        return res;
+    } catch (error) {
+        return error;
+    }
+}

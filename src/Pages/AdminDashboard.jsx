@@ -6,7 +6,7 @@ import { IoSettings } from "react-icons/io5";
 import logo from "../assets/images/logo.jpeg";
 import { lsService } from "../services/ls.service";
 import { approveDeposit, getCompanyEarnings, getDeposits, getUsers } from "../Components/helper/apiCalls";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import admindp from "https://placehold.co/600x400@2x.png";
 
 const usersData = [
@@ -39,6 +39,7 @@ const AdminDashboard = () => {
   const [deposits, setDeposits] = useState([]);
   const [admin,setAdmin]  = useState();
   const [currentSection, setCurrentSection] = useState("dashboard");
+  const navigate = useNavigate();
   // Toggle Active Status
   const toggleActiveStatus = (id) => {
     const updatedUsers = users.map((user) =>
@@ -105,7 +106,10 @@ const AdminDashboard = () => {
       navigate('/signin')
     }
 
-    if(!lsService.get('user').isAdmin) {
+    const user = lsService.get('user')
+    const isAdmin = user && user.isAdmin;
+
+    if(!isAdmin) {
       navigate('/home')
     }
 
@@ -128,26 +132,26 @@ const AdminDashboard = () => {
               <IoMdHome className="mr-1 text-lg" />
               Dashboard
             </button>
-            <button className="hover:bg-[#0466c8] font-semibold text-center text-white py-2 px-5 rounded-3xl mb-2 flex items-center">
+            {/* <button className="hover:bg-[#0466c8] font-semibold text-center text-white py-2 px-5 rounded-3xl mb-2 flex items-center">
               <MdBarChart className="mr-1 text-lg" />
               Insight
-            </button>
-            <button className="hover:bg-[#0466c8] font-semibold text-center text-white py-2 px-5 rounded-3xl mb-2 flex items-center">
+            </button> */}
+            {/* <button className="hover:bg-[#0466c8] font-semibold text-center text-white py-2 px-5 rounded-3xl mb-2 flex items-center">
               <IoIosPaper className="mr-1 text-lg" /> Transaction
-            </button>
+            </button> */}
             <button onClick={e => setCurrentSection('deposits')} className={`hover:bg-[#0466c8] font-semibold text-center text-white py-2 px-5 rounded-3xl mb-2 flex items-center ${currentSection === "deposits" ? "bg-[#0466c8]" : ""}`}>
               <IoIosPaper className="mr-1 text-lg" /> Deposits
             </button>
-            <button className="hover:bg-[#0466c8] font-semibold text-center text-white py-2 px-5 rounded-3xl mb-2 flex items-center">
+            {/* <button className="hover:bg-[#0466c8] font-semibold text-center text-white py-2 px-5 rounded-3xl mb-2 flex items-center">
               <RiAccountCircleFill className="mr-1 text-lg" />
               Account
             </button>
             <button className="hover:bg-[#0466c8] font-semibold text-center text-white py-2 px-5 rounded-3xl mb-4 flex items-center">
               <IoSettings className="mr-1 text-lg" /> Setting
-            </button>
+            </button> */}
           </div>
           {/* Company Earnings Section */}
-          <div className="pt-12">
+          <div className="pt-12 px-2">
             <h2 className="text-lg font-semibold mb-4">
               View Company Earnings
             </h2>
@@ -180,7 +184,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Middle Column */}
-      <div className="w-4/6 bg-[#1f1f1f]  text-white p-8 pb-4">
+      <div className="w-5/6 bg-[#1f1f1f]  text-white p-8 pb-4">
         <h1 className="text-2xl font-semibold mb-6">Admin Dashboard</h1>
         {
           currentSection === "dashboard" ? (
@@ -229,20 +233,6 @@ const AdminDashboard = () => {
               </tbody>
             </table>
             </div>
-  
-            {/* User Avatars Section */}
-            <div className="flex space-x-4 mt-52 bg-black rounded-2xl py-4 px-auto pl-4">
-              {users.map((user) => (
-                <div key={user._id} className="flex items-center space-x-2">
-                  <img
-                    src={'https:// '}
-                    alt={user.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  <p>{user.name}</p>
-                </div>
-              ))}
-            </div>
           </>
           ) : currentSection === "deposits" ? (
             <>
@@ -280,7 +270,7 @@ const AdminDashboard = () => {
             </div>
 
             {/* User Avatars Section */}
-            <div className="flex space-x-4 mt-52 bg-black rounded-2xl py-4 px-auto pl-4">
+            {/* <div className="flex space-x-4 mt-52 bg-black rounded-2xl py-4 px-auto pl-4">
               {users.map((user) => (
                 <div key={user._id} className="flex items-center space-x-2">
                   <img
@@ -291,92 +281,10 @@ const AdminDashboard = () => {
                   <p>{user.name}</p>
                 </div>
               ))}
-            </div>
+            </div> */}
             </>
           ) : null
         }
-      </div>
-
-      {/* Right Column */}
-      <div className="w-1/5 text-white  bg-[#222222] p-6">
-        <div className="flex items-center justify-between">
-          <p className="flex flex-col">
-            <span>{admin?.name || admin?.username}</span>
-            <span className="text-end">admin</span>
-          </p>
-          <img
-            src="https://placehold.co/600x400@2x.png"
-            alt="profile"
-            className="w-16 h-16 rounded-full border-4 border-gray-500"
-          />
-        </div>
-        <div className="space-y-6">
-          {/* Achievers Section */}
-          <div className="pt-10">
-            <h2 className="text-lg font-semibold mb-4">View Achievers</h2>
-            <div className="flex flex-col space-y-4 mt-4 bg-black rounded-2xl py-4 px-auto pl-4">
-              {users.map((user) => (
-                <div key={user.id} className="flex items-center space-x-2">
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  <p>{user.name}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Individual Trees Section */}
-          <div className="pt-10">
-            <div className="bg-black p-4 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold mb-4 text-white">
-                View Individual Trees
-              </h2>
-
-              {/* Tree Structure */}
-              <div className="flex flex-col items-center">
-                {/* First Level */}
-                <div className="flex items-center mb-4">
-                  <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white">
-                    <img
-                      src="https://randomuser.me/api/portraits/men/1.jpg"
-                      alt="User 1"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <p className="ml-4 text-white">User 1</p>
-                </div>
-                {/* Second Level */}
-                <div className="flex flex-col items-center mb-4">
-                  {/* Child 1 */}
-                  <div className="flex items-center mb-4">
-                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white">
-                      <img
-                        src="https://randomuser.me/api/portraits/women/2.jpg"
-                        alt="User 2"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <p className="ml-4 text-white">User 2</p>
-                  </div>
-                  {/* Child 2 */}
-                  <div className="flex items-center">
-                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white">
-                      <img
-                        src="https://randomuser.me/api/portraits/men/2.jpg"
-                        alt="User 3"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <p className="ml-4 text-white">User 3</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

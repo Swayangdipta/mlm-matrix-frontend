@@ -5,6 +5,7 @@ import { lsService } from '../services/ls.service';
 import toast from 'react-hot-toast';
 import { BiMenu } from 'react-icons/bi';
 import Menu from '../Components/Menu';
+import PaymentQr from '../assets/images/payment_method.jpeg'
 
 const Payment = () => {
     const [user, setUser] = React.useState(undefined);
@@ -12,6 +13,8 @@ const Payment = () => {
     const [loading, setLoading] = React.useState(true);
     const [upline, setUpline] = useState([]);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+    const [currentReceipt, setCurrentReceipt] = useState(false);
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -82,15 +85,30 @@ const Payment = () => {
 
     const handlePayment = async (level, recipient, amount) => {
         toast.loading(`Processing payment to ${recipient.name}...`);
-      
+
+        if(!currentReceipt){
+            toast.dismiss();
+            toast.error('Please upload a payment receipt or screenshot');
+            return
+        }
         try {
           const data = {
             level,
             amount,
-            recipient: recipient._id,
+            recipient: recipient.name === 'Company' ? recipient : recipient._id,
+            receipt: currentReceipt,
+            userId: user._id
           };
+
+            const form = new FormData();
+            form.append('level', data.level);
+            form.append('amount', data.amount);
+            form.append('recipient', data.recipient);
+            form.append('receipt', data.receipt);
+            form.append('userId', data.userId);
+
       
-          const response = await payToIndividual(user._id, data);
+          const response = await payToIndividual(user._id, form);
       
           if (response.status === 200) {
             toast.dismiss();
@@ -111,6 +129,8 @@ const Payment = () => {
             data.walletBalance -= amount
             lsService.set('user', data)
             setUser(data)
+            setCurrentReceipt(null); // Reset receipt after successful payment
+            setIsPaymentModalOpen(false); // Close the payment modal
           } else {
             toast.dismiss();
             toast.error(response.data?.message || `Failed to pay ${recipient.name}`);
@@ -121,6 +141,15 @@ const Payment = () => {
         }
       };      
       
+    const setPaymentModal = (level, recipient, amount) => {
+        setIsPaymentModalOpen(
+            {
+                level,
+                recipient,
+                amount
+            }
+        );
+    }
 
   return (
     <div className="bg-gray-100 min-h-screen p-6">
@@ -174,7 +203,7 @@ const Payment = () => {
                             ) : uplineUser ? (
                                 <button
                                 className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 text-sm"
-                                onClick={() => handlePayment(level, uplineUser, amount)}
+                                onClick={() => setPaymentModal(level, uplineUser, amount)}
                                 >
                                 Pay ₹{amount}
                                 </button>
@@ -200,7 +229,7 @@ const Payment = () => {
                         ) : (
                             <button
                             className="bg-indigo-600 text-white px-4 py-1 rounded hover:bg-indigo-700 text-sm"
-                            onClick={() => handlePayment('company', { name: 'Company' }, 700)}
+                            onClick={() => setPaymentModal('company', { name: 'Company', qrCode: PaymentQr }, 700)}
                             >
                             Pay ₹700
                             </button>
@@ -217,12 +246,10 @@ const Payment = () => {
                         <button
                             className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 text-sm"
                             onClick={() => {
-                            unpaidLevels.forEach(item =>
-                                handlePayment(item.level, item.user, item.amount)
-                            );
+                                setPaymentModal('company', { name: 'Company', qrCode: PaymentQr }, totalUnpaid)
                             }}
                         >
-                            Pay All
+                            Pay all to company
                         </button>
                         ) : (
                         <span className="text-green-600 font-semibold">All Paid</span>
@@ -243,6 +270,35 @@ const Payment = () => {
                 <div onClick={e => setIsMenuOpen(false)} className='w-screen h-screen bg-[#00000010] fixed top-0 left-0'></div>
                 <Menu setIsOpen={setIsMenuOpen} user={user} setUser={setUser} />
                 </>
+            )
+        }
+
+        {
+            isPaymentModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-max">
+                        <h2 className="text-xl font-bold mb-4">Confirm Payment</h2>
+                        <p className="mb-4">Pay ₹{isPaymentModalOpen.amount} to {isPaymentModalOpen.recipient.name} for Level {isPaymentModalOpen.level}?</p>
+                        <img className='w-[100px] h-[100px]' src={isPaymentModalOpen.recipient.qrCode} alt="" />
+                        <p className="text-sm text-gray-500 mb-4">Scan the QR code to complete the payment.</p>
+                        <p className='mt-4 text-lg underline underline-offset-8 text-emerald-800 font-semibold'>Payment receipt / screenshot</p>
+                        <input onChange={e => setCurrentReceipt(e.target.files[0])} type="file" className='w-full py-2 px-2 my-4 border-2 rounded text-emerald-800 font-semibold' alt="" />
+                        <div className="flex justify-end space-x-2">
+                            <button 
+                                className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                                onClick={() => setIsPaymentModalOpen(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                onClick={() => handlePayment(isPaymentModalOpen.level, isPaymentModalOpen.recipient, isPaymentModalOpen.amount)}
+                            >
+                                Confirm Payment
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )
         }
     </div>

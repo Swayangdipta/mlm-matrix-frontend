@@ -1,9 +1,10 @@
 import React from 'react'
 import logo from '../assets/images/logo.jpeg'
 import { CgProfile } from 'react-icons/cg'
-import { BiHome, BiUser } from 'react-icons/bi'
+import { BiHome, BiSolidBank, BiUser } from 'react-icons/bi'
 import { lsService } from '../services/ls.service'
 import { Link, useNavigate } from 'react-router-dom'
+import { HiMiniBanknotes } from 'react-icons/hi2'
 const Menu = ({setIsOpen = f => f, user, setUser = f => f, location = 'def'}) => {
     const navigate = useNavigate()
     const handleLogout = () => {
@@ -36,6 +37,18 @@ const Menu = ({setIsOpen = f => f, user, setUser = f => f, location = 'def'}) =>
                 <div className='flex gap-2 items-center text-18px p-2 border-2 rounded border-dashed border-white mt-2 bg-white'>
                     <BiUser className='text-[20px]' />
                     My Profile
+                </div>
+            </Link>
+            <Link to='/credits'>
+                <div className='flex gap-2 items-center text-18px p-2 border-2 rounded border-dashed border-white mt-2 bg-emerald-100 text-emerald-900'>
+                    <HiMiniBanknotes className='text-[20px]' />
+                    Credits
+                </div>
+            </Link>
+            <Link to='/withdrawals'>
+                <div className='flex gap-2 items-center text-18px p-2 border-2 rounded border-dashed border-white mt-2 bg-rose-100 text-rose-900'>
+                    <BiSolidBank className='text-[20px] ' />
+                    Withdrawals
                 </div>
             </Link>
             <button className='w-full p-2 bg-rose-500 text-white rounded mt-2' onClick={handleLogout}>Logout</button>

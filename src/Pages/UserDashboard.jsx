@@ -11,6 +11,8 @@ import SearchArea from '../Components/SearchArea';
 import { MdEmail } from 'react-icons/md';
 import TwoLevelTree from '../Components/TwoLevelTree';
 import PaymentQr from '../assets/images/payment_method.jpeg'
+import { FaUsers } from 'react-icons/fa';
+import { FaBuilding, FaBuildingUser } from 'react-icons/fa6';
 
 // Dummy data for now
 const userData = {
@@ -74,33 +76,6 @@ const UserDashboard = () => {
     }
   };
 
-  const getUplineData = async () => {    
-    if(user.sponsor){
-      const response = await getUplineTree(user.sponsor)
-      
-      if(response.status === 200) {
-        setUpline(response.data)
-      }
-    }
-  }
-
-  const getDownlineData = async () => {   
-    if(user._id){
-      const response = await getDownlineTree(user._id)
-       ;
-      
-      if(response.status === 200) {
-        // Transform data for react-d3-tree
-        const transformTree = (node) => ({
-          name: node.name,
-          children: node.children.map(transformTree),
-      });
-      
-                      
-        setDownline(transformTree(response.data))
-      }
-    }
-  }
 
   const getSlotsData = async () => {
     if(user._id){
@@ -161,8 +136,6 @@ const UserDashboard = () => {
 
   useEffect(() => {
     getSlotsData()
-    getUplineData()
-    getDownlineData()
     getDownlineLength()
   }, [user])
 
@@ -288,13 +261,23 @@ const UserDashboard = () => {
           </div>
         )}
 
-        {/* Search Section */}
+        <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">
+        <h2 className="text-xl sm:text-3xl font-semibold mb-4">Team Data</h2>
+        <div className='flex sm:items-start sm:flex-row flex-col gap-10 sm:gap-10'>
+          <Link to='/downlines'>
+            <div className='w-[200px] h-[100px] border-dotted bg-emerald-100 border-emerald-600 border-2 rounded-lg flex items-center justify-center'>
+              <h1 className='text-emerald-900 font-bold flex items-center justify-center gap-2'><FaUsers className='text-[26px]' /> My Downlines</h1>
+            </div>
+          </Link>
+          <Link to='/uplines'>
+            <div className='w-[200px] h-[100px] border-dotted bg-purple-100 border-purple-600 border-2 rounded-lg flex items-center justify-center'>
+              <h1 className='text-purple-900 font-bold flex items-center justify-center gap-2'><FaBuildingUser className='text-[26px]' /> My Uplines</h1>
+            </div>
+          </Link>
+        </div>
+      </div>
 
-        {
-          user && user._id && (<SearchArea userId={user._id} />)
-        }
-
-      {/* Downline Section */}
+      {/* Downline Section
       <div className="bg-white p-6 rounded-lg shadow-md mb-6 border-dotted border-gray-600 border-2">
         <h2 className="text-xl sm:text-3xl font-semibold mb-4">Downline Tree</h2>
         {downline ? (
@@ -320,7 +303,7 @@ const UserDashboard = () => {
         ) : (
           <p>No upline users found.</p>
         )}
-      </div>
+      </div> */}
       
       {
         isNewReigtrationOpen && (

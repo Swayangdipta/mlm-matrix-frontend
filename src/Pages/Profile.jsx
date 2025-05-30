@@ -149,7 +149,7 @@ const Profile = () => {
                     {
                         title: "KYC Details",
                         icon: <IoIosImages className="text-purple-500 text-2xl mr-2" />,
-                        fields: ["aadharFront", "aadharBack", "pancard"],
+                        fields: ["aadharFront", "aadharBack", "pancard", "qrCode"],
                         editKey: "kyc",
                         color: "bg-purple-50 border-purple-300"
                     }

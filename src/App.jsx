@@ -24,6 +24,8 @@ import Profile from "./Pages/Profile";
 import Downline from "./Pages/Downline";
 import { Toaster } from "react-hot-toast";
 import Payment from "./Pages/Payment";
+import Credits from "./Pages/Credits";
+import MyTeam from "./Pages/MyTeam";
 
 function App() {
   return (
@@ -40,6 +42,10 @@ function App() {
           <Route path="/downline/direct" element={<Downline type='direct' />}/>
           <Route path="/downline/all" element={<Downline type='all' />}/>
           <Route path="/payment" element={<Payment />}/>
+          <Route path="/credits" element={<Credits />}/>
+          <Route path="/withdrawals" element={<Credits type="withdrawals" />}/>
+          <Route path="/downlines" element={<MyTeam />}/>
+          <Route path="/uplines" element={<MyTeam type="uplines" />}/>
           <Route path="navbar" element={<Navbar />}/>
           <Route path="pricing" element={<Pricing />}/>
           <Route path="features" element={<Features />}/>

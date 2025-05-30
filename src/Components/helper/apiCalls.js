@@ -264,3 +264,27 @@ export const getTwoLevelDownline = async (userId,data) => {
         return error.response;
     }
 }
+
+export const getUserCredits = async (userId) => {
+    try {
+        const res = await axios.get(`${backend}/user/credits/${userId}`);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}
+
+export const getUserWithdrawals = async (userId) => {
+    try {
+        const res = await axios.get(`${backend}/user/withdrawals/${userId}`);
+        
+        return res;
+    } catch (error) {
+        console.log(error);
+        
+        return error.response;
+    }
+}
